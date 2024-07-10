@@ -51,4 +51,11 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # To render debugging information preserving the response format, use the value :api
+  config.debug_exception_response_format = :api
+
+  # By default, caching is only enabled in your production environment
+  # This enable that you can play around with caching locally
+  config.action_controller.perform_caching 
 end
