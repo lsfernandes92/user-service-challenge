@@ -1,0 +1,5 @@
+# Ignore all logfiles and tempfiles.
+.keep
+
+# Ignore Byebug command history file.
+.byebug_history
