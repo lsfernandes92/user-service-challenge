@@ -1,11 +1,13 @@
 module Api
   class UsersController < ApplicationController
     def index
-      @users = Rails.cache.fetch("all_users", expires_in: 1.day) do
-        User.most_recently.load
+      users_ids = Rails.cache.fetch("all_users", expires_in: 5.seconds) do
+        User.most_recently.ids
       end
   
-      render json: @users
+      @users = User.where(id: users_ids)
+
+      render json: { users: @users }
     end
   end
 end
