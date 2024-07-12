@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  GENDERS = %w[ male female lesbian gay bisexual pansexual asexual transgender non-binary queer ]
+  EMPLOYMENT_STATUS = %w[ employed unemployed ]
+  EDUCATIONAL_LEVEL = %w[ no-formal primary secondary bachelors masters doctorate ]
+
   validates :email,
     length: { maximum: 200 },
     presence: true,
@@ -24,5 +28,14 @@ class User < ApplicationRecord
 
   def as_json(options = {})
     super(except: %w[id created_at updated_at])
+  end
+
+  def self.generate_random_sanitized_metadata
+    "
+      #{User::GENDERS.sample},
+      age #{rand(1..100)},
+      #{User::EMPLOYMENT_STATUS.sample},
+      #{User::EDUCATIONAL_LEVEL.sample}-educated
+    ".strip.gsub(/\s+/, ' ')
   end
 end
