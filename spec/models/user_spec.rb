@@ -169,5 +169,105 @@ RSpec.describe User, type: :model do
         )
       end
     end
+
+    context 'on gender metadata attribute' do
+      it 'accepts nil' do
+        subject.gender = nil
+
+        expect(subject).to be_valid
+        expect(subject.errors.full_messages).to be_empty
+      end
+      
+      it 'validates valid format' do
+        subject.gender = User::GENDERS.sample
+
+        expect(subject).to be_valid
+        expect(subject.errors.full_messages).to be_empty
+      end
+
+      it 'validates invalid format' do
+        subject.gender = 'foo'
+
+        expect(subject).not_to be_valid
+        expect(subject.errors.full_messages).to match_array([
+          "Gender must be one of the following: [\"male\", \"female\", \"lesbian\", \"gay\", \"bisexual\", \"pansexual\", \"asexual\", \"transgender\", \"non-binary\", \"queer\"]"
+        ])
+      end
+    end
+
+    context 'on employment_status metadata attribute' do
+      it 'accepts nil' do
+        subject.employment_status = nil
+
+        expect(subject).to be_valid
+        expect(subject.errors.full_messages).to be_empty
+      end
+
+      it 'validates valid format' do
+        subject.employment_status = User::EMPLOYMENT_STATUSES.sample
+
+        expect(subject).to be_valid
+        expect(subject.errors.full_messages).to be_empty
+      end
+
+      it 'validates invalid format' do
+        subject.employment_status = 'foo'
+
+        expect(subject).not_to be_valid
+        expect(subject.errors.full_messages).to match_array([
+          "Employment status must be one of the following: [\"employed\", \"unemployed\"]"
+        ])
+      end
+    end
+
+    context 'on educational_level metadata attribute' do
+      it 'accepts nil' do
+        subject.educational_level = nil
+
+        expect(subject).to be_valid
+        expect(subject.errors.full_messages).to be_empty
+      end
+
+      it 'validates valid format' do
+        subject.educational_level = User::EDUCATIONAL_LEVELS.sample
+
+        expect(subject).to be_valid
+        expect(subject.errors.full_messages).to be_empty
+      end
+
+      it 'validates invalid format' do
+        subject.educational_level = 'foo'
+
+        expect(subject).not_to be_valid
+        expect(subject.errors.full_messages).to match_array([
+          "Educational level must be one of the following: [\"no-formal-educated\", \"primary-educated\", \"secondary-educated\", \"bachelors-educated\", \"masters-educated\", \"doctorate-educated\"]"
+        ])
+      end
+    end
+
+    context 'on age metadata attribute' do
+      it 'accepts nil' do
+        subject.age = nil
+
+        expect(subject).to be_valid
+        expect(subject.errors.full_messages).to be_empty
+      end
+
+      it 'validates valid format' do
+        subject.age = 'age 31'
+
+        expect(subject).to be_valid
+        expect(subject.errors.full_messages).to be_empty
+      end
+
+      it 'validates invalid format' do
+        subject.age = 'foo'
+
+        expect(subject).not_to be_valid
+        expect(subject.errors.full_messages).to match_array([
+          "Age must be in the format 'age <NUMBER>' where number is between 0 and 100"
+        ])
+      end
+    end
   end
 end
