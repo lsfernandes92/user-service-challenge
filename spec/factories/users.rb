@@ -6,6 +6,6 @@ FactoryBot.define do
     password { Faker::Internet.password }
     key { Faker::Internet.password(min_length: 100, max_length: 100) }
     account_key { Faker::Internet.password(min_length: 100, max_length: 100) }
-    metadata { User.generate_random_metadata }
+    metadata { User.generate_random_sanitized_metadata }
   end
 end

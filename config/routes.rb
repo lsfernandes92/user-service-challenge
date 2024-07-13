@@ -8,6 +8,6 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
   namespace :api do
-    resources :users
+    resources :users, only: [ :index ]
   end
 end

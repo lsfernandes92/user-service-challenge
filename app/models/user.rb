@@ -21,12 +21,15 @@ class User < ApplicationRecord
     uniqueness: true
 
   scope :most_recently, -> (ids) { User.where(id: ids).order(created_at: :desc) }
+  scope :by_email, -> (email) { where(email: email) }
+  scope :by_full_name, -> (full_name) { where(full_name: full_name) }
+  scope :by_metadata, -> (metadata) { where(metadata: metadata) }
 
   def as_json(options = {})
-    super(except: %w[id created_at updated_at])
+    super(except: %w[id password created_at updated_at])
   end
 
-  def self.generate_random_metadata
+  def self.generate_random_sanitized_metadata
     "
       #{Faker::Gender.type}, 
       age #{rand(1..100)}, 
