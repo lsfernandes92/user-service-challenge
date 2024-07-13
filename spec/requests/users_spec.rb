@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
   describe 'GET #index' do
-    let(:first_user) { User.first }
+    let(:first_user) { User.last }
 
     before { create(:user); create(:user) }
 
@@ -21,7 +21,7 @@ RSpec.describe "Users", type: :request do
       expect(response_body['users'].first['password']).to eq(first_user.password)
       expect(response_body['users'].first['key']).to eq(first_user.key)
       expect(response_body['users'].first['account_key']).to eq(first_user.account_key)
-      expect(response_body['users'].first['metadata']).to eq(first_user.send(:sanitized_metadata))
+      expect(response_body['users'].first['metadata']).to eq(first_user.metadata)
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_10_192923) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_13_013252) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,7 +21,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_192923) do
     t.string "password", limit: 100, null: false
     t.string "key", limit: 100, null: false
     t.string "account_key", limit: 100
-    t.text "metadata"
+    t.string "metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
