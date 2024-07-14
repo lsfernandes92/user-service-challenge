@@ -3,10 +3,41 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   subject { build(:user) }
 
+  let(:first_user) { User.first }
+  let(:last_user) { User.last }
+
   context 'when is being created' do
+    let(:user_without_key) { build(:user, :without_key) }
+    let(:user_without_account_key) { build(:user, :without_account_key) }
+
     it 'succeds with valid attributes' do
       expect(subject).to be_valid
       expect{ subject.save }.to change { User.count }.by(1)
+    end
+
+    it 'generates the key automagically' do
+      user_without_key.save!
+
+      expect(last_user.key).not_to be_blank
+      expect(last_user.key).to be_a String
+      expect(last_user.key.length).to eq 100
+    end
+    
+    it 'generates the account_key automagically' do
+      user_without_account_key.save!
+
+      expect(last_user.account_key).not_to be_blank
+      expect(last_user.account_key).to be_a String
+      expect(last_user.account_key.length).to eq 100
+    end
+    
+    it 'generates a salt password automagically' do
+      subject.password = 'easypassword'
+      subject.save!
+
+      secure_password = User.last.password
+      pass_verified = Argon2::Password.verify_password("easypassword", secure_password)
+      expect(pass_verified).to eq true
     end
   end
 
@@ -112,61 +143,65 @@ RSpec.describe User, type: :model do
     end
 
     context 'on key attribute' do
-      let(:already_taken_key) do
-        Faker::Internet.password(min_length: 100, max_length: 100)
-      end
+      context 'when a user is being reassign' do
+        before { create(:user) }
 
-      it 'validates presence' do
-        subject.key = ''
+        let(:already_taken_key) { last_user.key }
+  
+        it 'validates presence' do
+          last_user.key = ''
 
-        expect(subject).not_to be_valid
-        expect(subject.errors.full_messages).to match_array(
-          ["Key can't be blank"]
-        )
-      end
-      
-      it 'validates maximum length' do
-        subject.key = 'a' * 101
-
-        expect(subject).not_to be_valid
-        expect(subject.errors.full_messages).to match_array(
-          ["Key is too long (maximum is 100 characters)"]
-        )
-      end
-
-      it 'validates uniqueness' do
-        create(:user, key: already_taken_key)
-        subject.key = already_taken_key
-
-        expect(subject).not_to be_valid
-        expect(subject.errors.full_messages).to match_array(
-          ["Key has already been taken"]
-        )
+          expect(last_user).not_to be_valid
+          expect(last_user.errors.full_messages).to match_array(
+            ["Key can't be blank"]
+          )
+        end
+        
+        it 'validates maximum length' do
+          last_user.key = 'a' * 101
+  
+          expect(last_user).not_to be_valid
+          expect(last_user.errors.full_messages).to match_array(
+            ["Key is too long (maximum is 100 characters)"]
+          )
+        end
+  
+        it 'validates uniqueness' do
+          create(:user)
+          first_user.key = already_taken_key
+  
+          expect(first_user).not_to be_valid
+          expect(first_user.errors.full_messages).to match_array(
+            ["Key has already been taken"]
+          )
+        end
       end
     end
 
     context 'on account_key attribute' do
-      let(:already_taken_account_key) do
-        Faker::Internet.password(min_length: 100, max_length: 100)
-      end
+      context 'when a user is being reassign' do
+        before { create(:user) }
 
-      it 'validates maximum length' do
-        subject.account_key = 'a' * 101
-
-        expect(subject).not_to be_valid
-        expect(subject.errors.full_messages).to match_array(
-          ["Account key is too long (maximum is 100 characters)"]
-        )
-      end
-
-      it 'validates uniqueness' do
-        create(:user, account_key: already_taken_account_key)
-        subject.account_key = already_taken_account_key
-
-        expect(subject).not_to be_valid
-        expect(subject.errors.full_messages).to match_array(
-          ["Account key has already been taken"]
-        )
+        let(:already_taken_account_key) { last_user.account_key }
+  
+        it 'validates maximum length' do
+          last_user.account_key = 'a' * 101
+  
+          expect(last_user).not_to be_valid
+          expect(last_user.errors.full_messages).to match_array(
+            ["Account key is too long (maximum is 100 characters)"]
+          )
+        end
+  
+        it 'validates uniqueness' do
+          create(:user)
+          first_user.account_key = already_taken_account_key
+  
+          expect(first_user).not_to be_valid
+          expect(first_user.errors.full_messages).to match_array(
+            ["Account key has already been taken"]
+          )
+        end
       end
     end
   end
@@ -189,7 +224,6 @@ RSpec.describe User, type: :model do
     end
 
     context '.by_email' do
-      let(:first_user) { User.first }
       let(:user_email) { first_user.email }
 
       it 'returns users by a given email' do
@@ -202,7 +236,6 @@ RSpec.describe User, type: :model do
     end
 
     context '.by_full_name' do
-      let(:first_user) { User.first }
       let(:second_user) { User.last }
       let(:user_full_name) { first_user.full_name }
 
@@ -228,7 +261,6 @@ RSpec.describe User, type: :model do
     end
 
     context '.by_metadata' do
-      let(:first_user) { User.first }
       let(:user_metadata) { first_user.metadata }
       
       it 'returns users by a given full_name' do

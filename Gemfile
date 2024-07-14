@@ -24,6 +24,9 @@ gem 'bootsnap', '1.18.3', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+# A Ruby gem offering bindings for Argon2 password hashing
+gem 'argon2', '~> 2.0', '>= 2.0.3'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

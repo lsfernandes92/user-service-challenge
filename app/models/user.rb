@@ -20,6 +20,9 @@ class User < ApplicationRecord
     length: { maximum: 100 },
     uniqueness: true
 
+  before_validation :generate_key, :generate_account_key, on: :create
+  after_validation :generate_hash_salt_password, on: :create
+
   scope :most_recently, -> (ids) { User.where(id: ids).order(created_at: :desc) }
   scope :by_email, -> (email) { where(email: email) }
   scope :by_full_name, -> (full_name) { where(full_name: full_name) }
@@ -37,4 +40,20 @@ class User < ApplicationRecord
       #{Faker::Educator.degree}
     ".strip.gsub(/\s+/, ' ')
   end
+
+  private
+
+    def generate_key
+      self.key = Faker::Internet.password(min_length: 100, max_length: 100)
+    end
+
+    def generate_account_key
+      self.account_key = Faker::Internet.password(min_length: 100, max_length: 100)
+    end
+
+    def generate_hash_salt_password
+      user_password = self.password
+      hash_password = Argon2::Password.create(user_password)
+      self.password = hash_password
+    end
 end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
-  describe 'GET #index' do
+  describe 'GET /api/users' do
     let(:first_user_created) { User.order(created_at: :desc).last }
     let(:last_user_created) { User.order(created_at: :desc).first }
 
@@ -117,6 +117,96 @@ RSpec.describe "Users", type: :request do
 
         it 'responds with an error message' do
           expect(response_body['errors'].first).to eq "found unpermitted parameter: :unpermitted_param"
+        end
+      end
+    end
+  end
+
+  describe 'POST /api/users' do
+    let(:valid_user_params) do
+      {
+        email: 'fooemail@gmail.com',
+        phone_number: '9999999999',
+        full_name: 'Foo name',
+        password: 'foopass',
+        metadata: 'male, age 32, unemployed, college-educated'
+      }
+    end
+
+    context 'with valid params' do
+      before { post api_users_path, params: { user: valid_user_params } }
+  
+      it 'returns status code 201' do
+        expect(response).to have_http_status(201)
+      end
+
+      it 'responds with a single user object' do
+        expect(response_body).to be_a Hash
+        expect(response_body['email']).to eq valid_user_params[:email]
+        expect(response_body['phone_number']).to eq valid_user_params[:phone_number]
+        expect(response_body['full_name']).to eq valid_user_params[:full_name]
+        expect(response_body['key']).to be_a String
+        expect(response_body['account_key']).to be_a String
+        expect(response_body['metadata']).to eq valid_user_params[:metadata]
+      end
+    end
+
+    context 'with invalid params' do
+      before { post api_users_path, params: { user: invalid_user_params } }
+
+      let(:invalid_user_params) do
+        {
+          email: 'fooemail',
+          phone_number: '',
+          full_name: 'Foo name',
+          password: '',
+          metadata: "male, age 32, unemployed, college-educated"
+        }
+      end
+
+      it 'returns status code 422' do
+        expect(response).to have_http_status(422)
+      end
+      
+      it 'responds with an array of errors' do
+        expect(response_body['errors']).to match_array(
+          ["Email is invalid", "Password can't be blank", "Phone number can't be blank"]
+        )
+      end
+
+      context 'passing non-unique params' do
+        before do
+          2.times do |_| 
+            post api_users_path, params: { user: valid_user_params }
+          end
+        end
+
+        it 'returns status code 422' do
+          expect(response).to have_http_status(422)
+        end
+        
+        it 'responds with an array of errors' do
+          expect(response_body['errors']).to match_array(
+            ["Email has already been taken", "Phone number has already been taken"]
+          )
+        end
+      end
+
+      context 'passing unpermitted params' do
+        let(:with_unpermitted_params) do
+          invalid_user_params.merge(key: 'randomkey', cellphone: '9999999999')
+        end
+
+        before { post api_users_path, params: { user: with_unpermitted_params } }
+  
+        it 'returns status code 422' do
+          expect(response).to have_http_status(422)
+        end
+        
+        it 'responds with an array of errors' do
+          expect(response_body['errors']).to match_array(
+            ["found unpermitted parameters: :key, :cellphone"]
+          )
         end
       end
     end
