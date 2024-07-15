@@ -1,0 +1,43 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws/v1/account
+    body:
+      encoding: UTF-8
+      string: '{"email":"tyler.jacobs@collier.example","key":"V3ipBNyduSfrjMtS8RvnrzVpRG54aC1Fqijohlb6aLBKcqL6AQLojTXVu8ZrQ0H3bH1Rj7zORgTtLf7q1p1tE06JDId25UdYXVnz"}'
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (linux aarch64) ruby/3.0.6p216
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '149'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 15 Jul 2024 21:12:24 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '121'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - 63864f47-5e25-48e2-9318-cd9b77c5d4ac
+      X-Amzn-Trace-Id:
+      - root=1-669590b4-0352b36365273af77da465a7;parent=60c122f4b78c692f;sampled=0;lineage=2f82d3d6:0
+    body:
+      encoding: UTF-8
+      string: '{"email":"tyler.jacobs@collier.example","account_key":"9cb2e6b6e8a31e6ead7ded2ea83be31f9b8ba1373119a7e5367488ddc0a0ffdb"}'
+  recorded_at: Mon, 15 Jul 2024 21:12:24 GMT
+recorded_with: VCR 6.2.0

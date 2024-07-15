@@ -5,7 +5,7 @@ RSpec.describe "Users", type: :request do
     let(:first_user_created) { User.order(created_at: :desc).last }
     let(:last_user_created) { User.order(created_at: :desc).first }
 
-    before { create_list(:user, 2) }
+    before { create_list(:user, 2, :without_generate_account_key_callback) }
 
     it 'returns status code 200' do
       get api_users_path
@@ -133,8 +133,12 @@ RSpec.describe "Users", type: :request do
       }
     end
 
-    context 'with valid params' do
+    context 'with valid params', :vcr do
       before { post api_users_path, params: { user: valid_user_params } }
+
+      let(:account_key_service_url) do
+        "#{::Api::ExternalServices::AccountKeyService::BASE_URL}/v1/account"
+      end
   
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
@@ -149,9 +153,19 @@ RSpec.describe "Users", type: :request do
         expect(response_body['account_key']).to be_a String
         expect(response_body['metadata']).to eq valid_user_params[:metadata]
       end
+
+      it 'calls account key external service' do
+        stub = stub_request(:post, account_key_service_url)
+        expect(stub).to have_been_requested
+      end
+
+      it 'skips generating the account_key if external service fail', :vcr do
+        expect(response).to have_http_status(201)
+        expect(response_body['account_key']).to be_nil
+      end
     end
 
-    context 'with invalid params' do
+    context 'with invalid params', :vcr do
       before { post api_users_path, params: { user: invalid_user_params } }
 
       let(:invalid_user_params) do

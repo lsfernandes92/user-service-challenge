@@ -1,0 +1,83 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws/v1/account
+    body:
+      encoding: UTF-8
+      string: '{"email":"foo@gmail.com","key":"42ToCuf3Kt0obZE8FuNhDrVhWe9FJCyMLkEAMo1S2jnLj0zffAjISXUEIl3zKNS8UOE143cJKEAIiRvPh1vFxMk5wIlwcGvHpqgi"}'
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (linux aarch64) ruby/3.0.6p216
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '134'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 15 Jul 2024 21:12:13 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '106'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - 792e4179-bf5a-4339-9b7c-e664bb647c56
+      X-Amzn-Trace-Id:
+      - root=1-669590ad-1b339fd67d857fe12befe303;parent=0f12e238cf8aea12;sampled=0;lineage=2f82d3d6:0
+    body:
+      encoding: UTF-8
+      string: '{"email":"foo@gmail.com","account_key":"3ecb20d9ca7c21523bb7a18221b0f178a28661d8636f8d447c22a1cf60afd2f9"}'
+  recorded_at: Mon, 15 Jul 2024 21:12:13 GMT
+- request:
+    method: post
+    uri: https://w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws/v1/account
+    body:
+      encoding: UTF-8
+      string: '{"email":"foo@gmail.com","key":"rcRxHeUsO3Ic8od15VWobkDqIVCNy8c3Qo2RaI0bvyMt9AosZHeK82677cFoRemgsMUC4iIxnMXlCrkG8oxGz3Bsyg6MKCkOmLle"}'
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (linux aarch64) ruby/3.0.6p216
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '134'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 15 Jul 2024 21:12:13 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '106'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - b8e49132-e8c9-4d15-a21b-aec692799969
+      X-Amzn-Trace-Id:
+      - root=1-669590ad-64ad72b255f48b7777a23e6a;parent=790a29364cda9e2a;sampled=0;lineage=2f82d3d6:0
+    body:
+      encoding: UTF-8
+      string: '{"email":"foo@gmail.com","account_key":"13bc71b223144796902f01387e955e197583ba8904a909670a6e0dcf45fd5a6d"}'
+  recorded_at: Mon, 15 Jul 2024 21:12:13 GMT
+recorded_with: VCR 6.2.0

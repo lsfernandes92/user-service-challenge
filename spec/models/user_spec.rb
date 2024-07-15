@@ -6,9 +6,12 @@ RSpec.describe User, type: :model do
   let(:first_user) { User.first }
   let(:last_user) { User.last }
 
-  context 'when is being created' do
+  context 'when is being created', :vcr do
     let(:user_without_key) { build(:user, :without_key) }
     let(:user_without_account_key) { build(:user, :without_account_key) }
+    let(:account_key_service_url) do
+      "#{::Api::ExternalServices::AccountKeyService::BASE_URL}/v1/account"
+    end
 
     it 'succeds with valid attributes' do
       expect(subject).to be_valid
@@ -23,12 +26,11 @@ RSpec.describe User, type: :model do
       expect(last_user.key.length).to eq 100
     end
     
-    it 'generates the account_key automagically' do
+    it 'generates the account_key automagically', :vcr do
       user_without_account_key.save!
 
       expect(last_user.account_key).not_to be_blank
       expect(last_user.account_key).to be_a String
-      expect(last_user.account_key.length).to eq 100
     end
     
     it 'generates a salt password automagically' do
@@ -39,9 +41,23 @@ RSpec.describe User, type: :model do
       pass_verified = Argon2::Password.verify_password("easypassword", secure_password)
       expect(pass_verified).to eq true
     end
+
+    it 'calls account key external service', :vcr do
+      user_without_account_key.save!
+
+      stub = stub_request(:post, account_key_service_url)
+      
+      expect(stub).to have_been_requested
+    end
+
+    it 'skips generating the account_key if external service fail', :vcr do
+      user_without_account_key.save!
+
+      expect(last_user.account_key).to be_nil
+    end
   end
 
-  context 'with validations' do
+  context 'with validations', :vcr do
     context 'on email attribute' do
       it 'validates presence' do
         subject.email = ''
@@ -206,7 +222,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'when using scope' do
+  describe 'when using scope', :vcr do
     before { create_list(:user, 2) }
 
     let(:users_ids) { User.ids }
@@ -273,7 +289,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#as_json' do
+  describe '#as_json', :vcr do
     before { create(:user) }
 
     let(:user_hash) { User.first.as_json }

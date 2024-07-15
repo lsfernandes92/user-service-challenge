@@ -1,0 +1,83 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws/v1/account
+    body:
+      encoding: UTF-8
+      string: '{"email":"viva_armstrong@mckenzie.example","key":"ELCekOvPRakvnh6JpGv2e8QCH7OhCvTTVneIhg515mKIb4W1NNd7nXJ7VwRFsO5y721Zp06DXPFYhGEBb2WSO66fgfKWeDhBp9kV"}'
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (linux aarch64) ruby/3.0.6p216
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '152'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 15 Jul 2024 21:13:18 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '124'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - e2058c8a-4485-4aa4-bb9a-d075b8815385
+      X-Amzn-Trace-Id:
+      - root=1-669590ee-4ea4cd4f1c35bd44271a9ada;parent=7685f077b5bf1d07;sampled=0;lineage=2f82d3d6:0
+    body:
+      encoding: UTF-8
+      string: '{"email":"viva_armstrong@mckenzie.example","account_key":"879274b6e6c59636e81892a9a4c99ce3f6a060a0738f2c2f9ac68938da2953e3"}'
+  recorded_at: Mon, 15 Jul 2024 21:13:18 GMT
+- request:
+    method: post
+    uri: https://w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws/v1/account
+    body:
+      encoding: UTF-8
+      string: '{"email":"maisie@halvorson.example","key":"OVbqjixFCYDzdWmfoana5SaXIjtzVCxNP4as6QVjETOIgEcHgm99sT9SEIh3bViV5vICs6KIlP9FEtimX7jH4sAnKGVJBzAZczt1"}'
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (linux aarch64) ruby/3.0.6p216
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '145'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 15 Jul 2024 21:13:23 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '117'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - ab88859e-d4eb-4907-a4cd-43bbe847b1a4
+      X-Amzn-Trace-Id:
+      - root=1-669590ef-172095597e3311406b8f16ac;parent=0db5770901c2765f;sampled=0;lineage=2f82d3d6:0
+    body:
+      encoding: UTF-8
+      string: '{"email":"maisie@halvorson.example","account_key":"f55e9173c38b74c09f38a6610aa5190e11576cc810362f4585cedd4b4270b2c6"}'
+  recorded_at: Mon, 15 Jul 2024 21:13:23 GMT
+recorded_with: VCR 6.2.0

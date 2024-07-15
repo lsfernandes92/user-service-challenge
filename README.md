@@ -29,32 +29,32 @@ below:
 
 ### GET /api/users
 
-- [ ] Return all current user records, most recently created first.
-- [ ] Optional query paramaters to filter results matching `email`, `full_name`,
+- [x] Return all current user records, most recently created first.
+- [x] Optional query paramaters to filter results matching `email`, `full_name`,
     and `metadata`. Return in most recently created first order. Example:
     `/api/users?full_name=Smith&metadata=male`.
-- [ ] 200 OK Response for all success cases.
-- [ ] 422 Unprocessable Entity for malformed query parameters such as
+- [x] 200 OK Response for all success cases.
+- [x] 422 Unprocessable Entity for malformed query parameters such as
   unsearchable fields (ie. `key`) or not existing ones (ie. `cellphone`).
 - [ ] 5xx for server errors.
 
 ### POST /api/users
 
-- [ ] Create a new user record in the database.
-- [ ] On success, return JSON object of user that was just created.
-- [ ] On success, return status code 201 Created.
-- [ ] On failure, return status code 422 Unprocessable Entity with a list of all
+- [x] Create a new user record in the database.
+- [x] On success, return JSON object of user that was just created.
+- [x] On success, return status code 201 Created.
+- [x] On failure, return status code 422 Unprocessable Entity with a list of all
     the errors.
 - [ ] 5xx for server errors.
-- [ ] Endpoint can only accept `email`, `phone_number`, `full_name`, `password`,
+- [x] Endpoint can only accept `email`, `phone_number`, `full_name`, `password`,
     and `metadata` fields.
-- [ ] `key` field should be generated server side when user is created.
-- [ ] `password` should be stored hashed with a salt value.
+- [x] `key` field should be generated server side when user is created.
+- [x] `password` should be stored hashed with a salt value.
 - [ ] `account_key` field should be generated from [Account Key Service](#account-key-service).
 
 ### JSON Specifications
 
-- [ ] On creation of a new user, the response object should be in the following
+- [x] On creation of a new user, the response object should be in the following
     format:
 ```
 {
@@ -66,7 +66,7 @@ below:
  metadata: "male, age 32, unemployed, college-educated"
 }
 ```
-- [ ] On returning found users, the response object should be in the following
+- [x] On returning found users, the response object should be in the following
     format:
 ```
 {
@@ -82,7 +82,7 @@ below:
  ]
 }
 ```
-- [ ] Errors should be returned as:
+- [x] Errors should be returned as:
 ```
 {
  errors: [
@@ -112,34 +112,34 @@ interact with the service in a background process and then update the user
 record when that background process is complete. If an error occurs, the
 application should retry on some reasonable schedule.
 
-- [ ] Create Access Key service library,
+- [x] Create Access Key service library,
 - [ ] On user create, trigger Sidekiq job for access Account Key service.
 - [ ] Perform retry on failure from Account Key service.
-- [ ] Update user model with `account_key` value.
+- [x] Update user model with `account_key` value.
 
 ### Testing
 #### User Model
 - [ ] Verify that all defined columns necessary exist.
-- [ ] Verify that columns have proper validation on the model.
-- [ ] Coverage should be 100% for app/models/user.rb.
+- [x] Verify that columns have proper validation on the model.
+- [x] Coverage should be 100% for app/models/user.rb.
 
 #### User Service Routing
-- [ ] Verify that the GET /api/users endpoint routes to the appropriate method.
-- [ ] Verify that the POST /api/users endpoint routes to the appropriate method.
+- [x] Verify that the GET /api/users endpoint routes to the appropriate method.
+- [x] Verify that the POST /api/users endpoint routes to the appropriate method.
 
 #### User Controller
-- [ ] Verify that a request without a query parameter returns all users in the
+- [x] Verify that a request without a query parameter returns all users in the
     database using the specified JSON format, ordered by most recently created
     first.
-- [ ] Verify that a request with a query parameter returns all users in the
+- [x] Verify that a request with a query parameter returns all users in the
     database filtered by the query paramater, using the specified JSON format,
     ordered by most recently created first.
-- [ ] Verify that creating a new user works with unique values specified, and
+- [x] Verify that creating a new user works with unique values specified, and
     returns a single User JSON object and a 201 Created status header.
-- [ ] Verify that creating a new user with non-unique values specified, returns
+- [x] Verify that creating a new user with non-unique values specified, returns
     a 422 Unprocessable Entity status, and an array of errors in the specified
     JSON format.
-- [ ] Verify that a new user that is created has a random key generated for it on
+- [] Verify that a new user that is created has a random key generated for it on
     the server side.
 - [ ] Verify that a new user that is created has it's password stored in a hashed
     manner, with a salt value.

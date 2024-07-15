@@ -15,25 +15,35 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
-
+# Simple, efficient background processing for Ruby
 gem 'sidekiq'
-
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '1.18.3', require: false
+# A Ruby gem offering bindings for Argon2 password hashing
+gem 'argon2', '~> 2.0', '>= 2.0.3'
+# Simple HTTP and REST client for Ruby, inspired by microframework syntax for specifying actions.
+gem 'rest-client'
+# A library for generating fake data such as names, addresses, and phone numbers.
+gem 'faker'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
-
-# A Ruby gem offering bindings for Argon2 password hashing
-gem 'argon2', '~> 2.0', '>= 2.0.3'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # RSpec for Rails 6+
   gem 'rspec-rails', '~> 6.1.0'
+end
+
+group :test do
   # Factory Bot ♥ Rails
   gem 'factory_bot_rails'
-  # A library for generating fake data such as names, addresses, and phone numbers.
-  gem 'faker'
+  # Record your test suite's HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests.
+  gem 'vcr'
+  # Library for stubbing and setting expectations on HTTP requests in Ruby.
+  # Used in conjunction with the vcr gem
+  gem "webmock"
+  # Strategies for cleaning databases in Ruby. Can be used to ensure a clean state for testing.
+  gem 'database_cleaner-active_record'
 end

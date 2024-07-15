@@ -1,0 +1,123 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws/v1/account
+    body:
+      encoding: UTF-8
+      string: '{"email":"fooemail","key":"IE8H5XOemft8MeevPZOusvSt26evBfyFHy5BK63vLorUlfFW5dm4IbeysWRXgiG7von9M8smOncRcKQw6a2JxZiiobGC2FufBuXU"}'
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (linux aarch64) ruby/3.0.6p216
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '129'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 15 Jul 2024 21:11:10 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '101'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - 6c117708-31e6-4199-865f-8e446ad0d37e
+      X-Amzn-Trace-Id:
+      - root=1-6695906c-26ec12121ec556822875477f;parent=369df779ff8df018;sampled=0;lineage=2f82d3d6:0
+    body:
+      encoding: UTF-8
+      string: '{"email":"fooemail","account_key":"830fd6828f54c6520027f8ec90eb6d508273d71854b3d193c3ef2039cf54df57"}'
+  recorded_at: Mon, 15 Jul 2024 21:11:11 GMT
+- request:
+    method: post
+    uri: https://w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws/v1/account
+    body:
+      encoding: UTF-8
+      string: '{"email":"fooemail@gmail.com","key":"PsmZ85YQvtIunQWY55Be9iVJPrnOUQkCbbUvuAqjLJoK1L63Z8Nwi1o1mKWUo0LwECH4nQRpPoDziUZTA3NZuYKY5z159Mo8BFdA"}'
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (linux aarch64) ruby/3.0.6p216
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '139'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 15 Jul 2024 21:11:13 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '111'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - 9647e5c6-549e-4bd2-8ad3-39ba3c59201c
+      X-Amzn-Trace-Id:
+      - root=1-6695906f-7a9c95ae485cbe880ac7c7f1;parent=7f5fce2a4158ccf8;sampled=0;lineage=2f82d3d6:0
+    body:
+      encoding: UTF-8
+      string: '{"email":"fooemail@gmail.com","account_key":"c33c5d414e8db36daac9cc9c131f9ef3d914c053fd25e0de825ba3d7e94a3a75"}'
+  recorded_at: Mon, 15 Jul 2024 21:11:13 GMT
+- request:
+    method: post
+    uri: https://w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws/v1/account
+    body:
+      encoding: UTF-8
+      string: '{"email":"fooemail@gmail.com","key":"mdeChMtNemsTliWp6D7JYytyJG5eICOhaA3rmY8m6TK0ZgzqrrOiIcXgTOTXDg3hz796Mw6vwy5Zo2Vt0QwpDljFFngGyUxLokhR"}'
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (linux aarch64) ruby/3.0.6p216
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '139'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 15 Jul 2024 21:11:16 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '111'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - 5b6c81f5-6d65-44e1-a90e-2357f6d474ec
+      X-Amzn-Trace-Id:
+      - root=1-66959072-48ef07561470c74672a9919d;parent=637a5e32048145db;sampled=0;lineage=2f82d3d6:0
+    body:
+      encoding: UTF-8
+      string: '{"email":"fooemail@gmail.com","account_key":"e10c2f506b00248a00dc53cf0859d82123c2e664a2c5217e48174af70b9fd9ac"}'
+  recorded_at: Mon, 15 Jul 2024 21:11:16 GMT
+recorded_with: VCR 6.2.0

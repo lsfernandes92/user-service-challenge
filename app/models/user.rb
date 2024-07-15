@@ -47,13 +47,29 @@ class User < ApplicationRecord
       self.key = Faker::Internet.password(min_length: 100, max_length: 100)
     end
 
-    def generate_account_key
-      self.account_key = Faker::Internet.password(min_length: 100, max_length: 100)
-    end
-
     def generate_hash_salt_password
       user_password = self.password
       hash_password = Argon2::Password.create(user_password)
       self.password = hash_password
+    end
+
+    def generate_account_key
+      gather_account_key
+      self.account_key = @external_account_key if account_key_service_succeed?
+    end
+
+    def gather_account_key
+      @external_account_key ||= account_key_service.gather_account_key(
+        email: self.email,
+        key: self.key
+      )
+    end
+
+    def account_key_service
+      @account_key_service ||= ::Api::ExternalServices::AccountKeyService
+    end
+
+    def account_key_service_succeed?
+      @account_key_service.request_succeed?
     end
 end

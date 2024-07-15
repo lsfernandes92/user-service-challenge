@@ -44,6 +44,27 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
+  # This RSpec configuration sets up a global hook (around(:each, :vcr)) that
+  # automatically wraps each test example tagged with :vcr with a corresponding
+  # cassette based on the example's full description.
+  config.around(:each, :vcr) do |example|
+    VCR.use_cassette(example.metadata[:full_description]) do
+      example.run
+    end
+  end
+
+  # Configure Database Cleaner to run for every test suite
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin

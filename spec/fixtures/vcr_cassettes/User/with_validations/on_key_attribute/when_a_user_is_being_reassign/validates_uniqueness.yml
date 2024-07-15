@@ -1,0 +1,83 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws/v1/account
+    body:
+      encoding: UTF-8
+      string: '{"email":"blake.muller@grant-willms.example","key":"iIzNUwknrqni4OX72RpnzoKslrwlXCweXO6WbgIe8j1BaPbKC7ya2VMUV12yZpg1n1vmW4XUaHeH5WRuNAjuQKczKwtfnaNeYmsU"}'
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (linux aarch64) ruby/3.0.6p216
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '154'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 15 Jul 2024 21:12:41 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '126'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - 4fec4f0f-f1b2-4e28-898a-bc04c5dc7025
+      X-Amzn-Trace-Id:
+      - root=1-669590c7-239bd0ad0f470aad1491d1db;parent=3f6c412f91c373e2;sampled=0;lineage=2f82d3d6:0
+    body:
+      encoding: UTF-8
+      string: '{"email":"blake.muller@grant-willms.example","account_key":"2dbe333af4865f62fae24a8705701c2aa3ba6f589706bad360a3572ae116281b"}'
+  recorded_at: Mon, 15 Jul 2024 21:12:41 GMT
+- request:
+    method: post
+    uri: https://w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws/v1/account
+    body:
+      encoding: UTF-8
+      string: '{"email":"jake@johnson-farrell.example","key":"7Car2Aqi9xZOwpWslR0zlT8b3IYRb7ZzI0MF5pa2wRalxTlwIDJe8qj0dkgO0emD2MamrlIYtZbPDUrColpbfauIdi9W021hPKF6"}'
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (linux aarch64) ruby/3.0.6p216
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '149'
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 15 Jul 2024 21:12:42 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '121'
+      Connection:
+      - keep-alive
+      X-Amzn-Requestid:
+      - 66bb59f0-5014-41c6-af37-495b337890d0
+      X-Amzn-Trace-Id:
+      - root=1-669590ca-07d90f87071b6fcc59decff5;parent=1164bf7f1a903337;sampled=0;lineage=2f82d3d6:0
+    body:
+      encoding: UTF-8
+      string: '{"email":"jake@johnson-farrell.example","account_key":"f236447af8f83fca5074640a73b5500af7c92c1bfe261f8151334237fde8ba36"}'
+  recorded_at: Mon, 15 Jul 2024 21:12:43 GMT
+recorded_with: VCR 6.2.0

@@ -33,5 +33,10 @@ module App
 
     # Controls behavior when parameters that are not explicitly permitted are found.
     config.action_controller.action_on_unpermitted_parameters = :raise
+
+    # Initialize configuration logger
+    # config.logger = Logger.new($stdout)
+    # Eager load lib contents
+    config.autoload_paths << Rails.root.join('lib')
   end
 end
