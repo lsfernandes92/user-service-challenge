@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -56,5 +58,5 @@ Rails.application.configure do
 
   # By default, caching is only enabled in your production environment
   # This enable that you can play around with caching locally
-  config.action_controller.perform_caching 
+  config.action_controller.perform_caching
 end

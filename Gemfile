@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -31,9 +33,11 @@ gem 'faker'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # RSpec for Rails 6+
   gem 'rspec-rails', '~> 6.1.0'
+  # RuboCop is a Ruby code style checking and code formatting tool. It aims to enforce the community-driven Ruby Style Guide.
+  gem 'rubocop', '~> 1.65'
 end
 
 group :test do
@@ -43,7 +47,7 @@ group :test do
   gem 'vcr'
   # Library for stubbing and setting expectations on HTTP requests in Ruby.
   # Used in conjunction with the vcr gem
-  gem "webmock"
+  gem 'webmock'
   # Strategies for cleaning databases in Ruby. Can be used to ensure a clean state for testing.
   gem 'database_cleaner-active_record'
 end

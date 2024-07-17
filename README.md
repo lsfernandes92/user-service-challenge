@@ -119,7 +119,7 @@ application should retry on some reasonable schedule.
 
 ### Testing
 #### User Model
-- [ ] Verify that all defined columns necessary exist.
+- [x] Verify that all defined columns necessary exist.
 - [x] Verify that columns have proper validation on the model.
 - [x] Coverage should be 100% for app/models/user.rb.
 

@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'sidekiq/testing'
 
-RSpec.describe "Users", type: :request do
+RSpec.describe 'Users', type: :request do
   describe 'GET /api/users' do
     let(:first_user_created) { User.order(created_at: :desc).last }
     let(:last_user_created) { User.order(created_at: :desc).first }
     let(:valid_headers) { { 'Accept': 'application/json' } }
 
-    before { create_list(:user, 2, :without_generate_account_key_callback) }
+    before { create_list(:user, 2) }
 
     it 'returns with the status code 200' do
       get api_users_path, headers: valid_headers
@@ -45,12 +47,12 @@ RSpec.describe "Users", type: :request do
         expect(response_body.keys).to eq ['errors']
       end
 
-      it "responds with an error message" do
+      it 'responds with an error message' do
         expect(response_body['errors'].first)
           .to eq "The header 'Accept' must be defined or the type is not supported by the server"
       end
     end
-    
+
     context 'request with query params' do
       context 'passing the email' do
         it 'returns user with a given email' do
@@ -60,7 +62,7 @@ RSpec.describe "Users", type: :request do
           expect(response_body['users'].count).to eq 1
           expect(response_body['users'].first['full_name']).to eq(last_user_created.full_name)
         end
-        
+
         it 'returns nil with non existed email' do
           get api_users_path, params: { email: 'foo@email.com' }, headers: valid_headers
 
@@ -77,7 +79,7 @@ RSpec.describe "Users", type: :request do
           expect(response_body['users'].count).to eq 1
           expect(response_body['users'].first['full_name']).to eq(last_user_created.full_name)
         end
-        
+
         it 'returns nil with non existed full_name' do
           get api_users_path, params: { full_name: 'Foo Name' }, headers: valid_headers
 
@@ -106,7 +108,7 @@ RSpec.describe "Users", type: :request do
           expect(response_body['users'].count).to eq 1
           expect(response_body['users'].first['full_name']).to eq(last_user_created.full_name)
         end
-        
+
         it 'returns nil with non existed full_name' do
           get api_users_path, params: { metadata: 'Foo metadata' }, headers: valid_headers
 
@@ -137,7 +139,7 @@ RSpec.describe "Users", type: :request do
         end
 
         it 'responds with an error message' do
-          expect(response_body['errors'].first).to eq "found unpermitted parameter: :unpermitted_param"
+          expect(response_body['errors'].first).to eq 'found unpermitted parameter: :unpermitted_param'
         end
       end
     end
@@ -158,18 +160,18 @@ RSpec.describe "Users", type: :request do
     context 'with valid params and headers' do
       it 'returns status code 201' do
         post api_users_path,
-          params: { user: valid_user_params },
-          headers: valid_headers,
-          as: :json
+             params: { user: valid_user_params },
+             headers: valid_headers,
+             as: :json
 
         expect(response).to have_http_status(201)
       end
 
       it 'responds with a single user object' do
-        post api_users_path, 
-          params: { user: valid_user_params },
-          headers: valid_headers,
-          as: :json
+        post api_users_path,
+             params: { user: valid_user_params },
+             headers: valid_headers,
+             as: :json
 
         expect(response_body).to be_a Hash
         expect(response_body['email']).to eq valid_user_params[:email]
@@ -181,12 +183,12 @@ RSpec.describe "Users", type: :request do
       end
 
       it 'queues job to gather account key' do
-        expect { 
+        expect do
           post api_users_path,
-          params: { user: valid_user_params },
-          headers: valid_headers,
-          as: :json
-        }.to change(GatherAccountKeyJob.jobs, :size).by(1)
+               params: { user: valid_user_params },
+               headers: valid_headers,
+               as: :json
+        end.to change(GatherAccountKeyJob.jobs, :size).by(1)
       end
     end
 
@@ -195,9 +197,9 @@ RSpec.describe "Users", type: :request do
 
       before do
         post api_users_path,
-          params: { user: valid_user_params },
-          headers: invalid_headers,
-          as: :json
+             params: { user: valid_user_params },
+             headers: invalid_headers,
+             as: :json
       end
 
       it 'responds with the status code 415' do
@@ -208,7 +210,7 @@ RSpec.describe "Users", type: :request do
         expect(response_body.keys).to eq ['errors']
       end
 
-      it "responds with an error message" do
+      it 'responds with an error message' do
         expect(response_body['errors'].first)
           .to eq "The header 'Content-Type' must be defined or the type is not supported by the server"
       end
@@ -217,9 +219,9 @@ RSpec.describe "Users", type: :request do
     context 'with invalid params' do
       before do
         post api_users_path,
-          params: { user: invalid_user_params },
-          headers: valid_headers,
-          as: :json
+             params: { user: invalid_user_params },
+             headers: valid_headers,
+             as: :json
       end
 
       let(:invalid_user_params) do
@@ -228,37 +230,37 @@ RSpec.describe "Users", type: :request do
           phone_number: '',
           full_name: 'Foo name',
           password: '',
-          metadata: "male, age 32, unemployed, college-educated"
+          metadata: 'male, age 32, unemployed, college-educated'
         }
       end
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
       end
-      
+
       it 'responds with an array of errors' do
         expect(response_body['errors']).to match_array(
-          ["Email is invalid", "Password can't be blank", "Phone number can't be blank"]
+          ['Email is invalid', "Password can't be blank", "Phone number can't be blank"]
         )
       end
 
       context 'passing non-unique params' do
         before do
-          2.times do |_| 
+          2.times do |_|
             post api_users_path,
-              params: { user: valid_user_params },
-              headers: valid_headers,
-              as: :json
+                 params: { user: valid_user_params },
+                 headers: valid_headers,
+                 as: :json
           end
         end
 
         it 'returns status code 422' do
           expect(response).to have_http_status(422)
         end
-        
+
         it 'responds with an array of errors' do
           expect(response_body['errors']).to match_array(
-            ["Email has already been taken", "Phone number has already been taken"]
+            ['Email has already been taken', 'Phone number has already been taken']
           )
         end
       end
@@ -270,18 +272,18 @@ RSpec.describe "Users", type: :request do
 
         before do
           post api_users_path,
-            params: { user: with_unpermitted_params },
-            headers: valid_headers,
-            as: :json
+               params: { user: with_unpermitted_params },
+               headers: valid_headers,
+               as: :json
         end
-  
+
         it 'returns status code 422' do
           expect(response).to have_http_status(422)
         end
-        
+
         it 'responds with an array of errors' do
           expect(response_body['errors']).to match_array(
-            ["found unpermitted parameters: :key, :cellphone"]
+            ['found unpermitted parameters: :key, :cellphone']
           )
         end
       end
@@ -290,7 +292,7 @@ RSpec.describe "Users", type: :request do
 
   private
 
-    def response_body
-      JSON.parse(response.body)
-    end
+  def response_body
+    JSON.parse(response.body)
+  end
 end

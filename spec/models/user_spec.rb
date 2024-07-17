@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
-require 'sidekiq/testing' 
+require 'sidekiq/testing'
 
 RSpec.describe User, type: :model do
   subject { build(:user) }
@@ -13,7 +15,7 @@ RSpec.describe User, type: :model do
 
     it 'succeds with valid attributes' do
       expect(subject).to be_valid
-      expect{ subject.save }.to change { User.count }.by(1)
+      expect { subject.save }.to change { User.count }.by(1)
     end
 
     it 'generates the key automagically' do
@@ -23,19 +25,19 @@ RSpec.describe User, type: :model do
       expect(last_user.key).to be_a String
       expect(last_user.key.length).to eq 100
     end
-    
+
     it 'sets account_key to nil' do
       user_without_account_key.save!
 
       expect(last_user.account_key).to be_nil
     end
-    
+
     it 'generates a salt password automagically' do
       subject.password = 'easypassword'
       subject.save!
 
       secure_password = User.last.password
-      pass_verified = Argon2::Password.verify_password("easypassword", secure_password)
+      pass_verified = Argon2::Password.verify_password('easypassword', secure_password)
       expect(pass_verified).to eq true
     end
 
@@ -51,7 +53,7 @@ RSpec.describe User, type: :model do
 
         expect(subject).not_to be_valid
         expect(subject.errors.full_messages).to match_array(
-          ["Email can't be blank", "Email is invalid"]
+          ["Email can't be blank", 'Email is invalid']
         )
       end
 
@@ -60,17 +62,17 @@ RSpec.describe User, type: :model do
 
         expect(subject).not_to be_valid
         expect(subject.errors.full_messages).to match_array(
-          ["Email is invalid", "Email is too long (maximum is 200 characters)"]
+          ['Email is invalid', 'Email is too long (maximum is 200 characters)']
         )
       end
-      
+
       it 'validates uniqueness' do
         create(:user, email: 'foo@gmail.com')
         subject.email = 'foo@gmail.com'
 
         expect(subject).not_to be_valid
         expect(subject.errors.full_messages).to match_array(
-          ["Email has already been taken"]
+          ['Email has already been taken']
         )
       end
 
@@ -79,7 +81,7 @@ RSpec.describe User, type: :model do
 
         expect(subject).not_to be_valid
         expect(subject.errors.full_messages).to match_array(
-          ["Email is invalid"]
+          ['Email is invalid']
         )
       end
     end
@@ -93,23 +95,23 @@ RSpec.describe User, type: :model do
           ["Phone number can't be blank"]
         )
       end
-      
+
       it 'validates maximum length' do
         subject.phone_number = 'a' * 21
 
         expect(subject).not_to be_valid
         expect(subject.errors.full_messages).to match_array(
-          ["Phone number is too long (maximum is 20 characters)"]
+          ['Phone number is too long (maximum is 20 characters)']
         )
-      end   
-      
+      end
+
       it 'validates uniqueness' do
         create(:user, phone_number: '9999999999')
         subject.phone_number = '9999999999'
 
         expect(subject).not_to be_valid
         expect(subject.errors.full_messages).to match_array(
-          ["Phone number has already been taken"]
+          ['Phone number has already been taken']
         )
       end
     end
@@ -120,7 +122,7 @@ RSpec.describe User, type: :model do
 
         expect(subject).not_to be_valid
         expect(subject.errors.full_messages).to match_array(
-          ["Full name is too long (maximum is 200 characters)"]
+          ['Full name is too long (maximum is 200 characters)']
         )
       end
     end
@@ -134,15 +136,15 @@ RSpec.describe User, type: :model do
           ["Password can't be blank"]
         )
       end
-      
+
       it 'validates maximum length' do
         subject.password = 'a' * 101
 
         expect(subject).not_to be_valid
         expect(subject.errors.full_messages).to match_array(
-          ["Password is too long (maximum is 100 characters)"]
+          ['Password is too long (maximum is 100 characters)']
         )
-      end 
+      end
     end
 
     context 'on key attribute' do
@@ -150,7 +152,7 @@ RSpec.describe User, type: :model do
         before { create(:user) }
 
         let(:already_taken_key) { last_user.key }
-  
+
         it 'validates presence' do
           last_user.key = ''
 
@@ -159,23 +161,23 @@ RSpec.describe User, type: :model do
             ["Key can't be blank"]
           )
         end
-        
+
         it 'validates maximum length' do
           last_user.key = 'a' * 101
-  
+
           expect(last_user).not_to be_valid
           expect(last_user.errors.full_messages).to match_array(
-            ["Key is too long (maximum is 100 characters)"]
+            ['Key is too long (maximum is 100 characters)']
           )
         end
-  
+
         it 'validates uniqueness' do
           create(:user)
           first_user.key = already_taken_key
-  
+
           expect(first_user).not_to be_valid
           expect(first_user.errors.full_messages).to match_array(
-            ["Key has already been taken"]
+            ['Key has already been taken']
           )
         end
       end
@@ -186,33 +188,32 @@ RSpec.describe User, type: :model do
         before { create(:user) }
 
         let(:already_taken_account_key) { last_user.account_key }
-  
+
         it 'validates maximum length' do
           last_user.account_key = 'a' * 101
-  
+
           expect(last_user).not_to be_valid
           expect(last_user.errors.full_messages).to match_array(
-            ["Account key is too long (maximum is 100 characters)"]
+            ['Account key is too long (maximum is 100 characters)']
           )
         end
-  
+
         it 'validates uniqueness' do
           create(:user)
           first_user.account_key = already_taken_account_key
-  
+
           expect(first_user).not_to be_valid
           expect(first_user.errors.full_messages).to match_array(
-            ["Account key has already been taken"]
+            ['Account key has already been taken']
           )
         end
 
         it 'does not validate uniqueness on nil' do
           create(:user)
           first_user.account_key = nil
-  
+
           expect(first_user).to be_valid
         end
-        
       end
     end
   end
@@ -221,7 +222,7 @@ RSpec.describe User, type: :model do
     before { create_list(:user, 2) }
 
     let(:users_ids) { User.ids }
-    
+
     context '.most_recently' do
       let(:last_user_created) { User.order(created_at: :desc).first }
 
@@ -265,7 +266,7 @@ RSpec.describe User, type: :model do
         expect(User.by_full_name('Foo name').first.id).to eq first_user.id
         expect(User.by_full_name('Foo name').last.id).to eq second_user.id
       end
-      
+
       it 'returns nil with invalid full_name' do
         expect(User.by_full_name('foo name').first).to eq nil
       end
@@ -273,7 +274,7 @@ RSpec.describe User, type: :model do
 
     context '.by_metadata' do
       let(:user_metadata) { first_user.metadata }
-      
+
       it 'returns users by a given full_name' do
         expect(User.by_metadata(user_metadata).first).to eq first_user
       end
@@ -289,7 +290,7 @@ RSpec.describe User, type: :model do
 
     let(:user_hash) { User.first.as_json }
     let(:desired_user_attributes) do
-      %w[ email phone_number full_name key account_key metadata ]
+      %w[email phone_number full_name key account_key metadata]
     end
 
     it 'returns only the desirable atributes for the user' do

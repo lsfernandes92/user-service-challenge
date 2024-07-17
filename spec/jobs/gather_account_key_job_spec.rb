@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'sidekiq/testing'
 
@@ -5,7 +7,7 @@ RSpec.describe GatherAccountKeyJob, type: :job do
   include ActiveJob::TestHelper
 
   describe '#perform' do
-    let(:email) { 'foo@email.com' } 
+    let(:email) { 'foo@email.com' }
     let(:key) { 'r4nd0mk3y' }
     let(:error_class) { StandardError }
 
@@ -18,7 +20,7 @@ RSpec.describe GatherAccountKeyJob, type: :job do
     it 'queues in the default queue' do
       expect { subject }.to change(Sidekiq::Queues['default'], :size).by(1)
     end
-    
+
     xit 'calls GatherAccountKeyService' do
       expect(GatherAccountKeyService).to receive(:new).with(email, key)
       expect_any_instance_of(GatherAccountKeyService).to receive(:perform)

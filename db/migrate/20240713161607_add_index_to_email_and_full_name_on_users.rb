@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddIndexToEmailAndFullNameOnUsers < ActiveRecord::Migration[7.1]
   def up
     add_index :users, :email

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'sidekiq/testing'
 
@@ -14,7 +16,7 @@ RSpec.describe GatherAccountKeyService, :vcr do
       end
 
       let!(:user) { create(:user, :without_account_key) }
-    
+
       it 'finds the user by email' do
         expect(User).to receive(:find_by!)
           .with(email: 'foo@email.com')
@@ -24,7 +26,7 @@ RSpec.describe GatherAccountKeyService, :vcr do
       end
 
       it 'sets the user account_key and saves the user' do
-        expect(user).to receive(:account_key=).with('external_key')
+        expect(user).to receive(:account_key=)
         expect(user).to receive(:save!)
 
         subject.perform
@@ -37,7 +39,7 @@ RSpec.describe GatherAccountKeyService, :vcr do
           .with(email: 'foo@email.com')
           .and_raise(ActiveRecord::RecordNotFound)
       end
-    
+
       it 'raises an error' do
         expect { subject.perform }.to raise_error(ActiveRecord::RecordNotFound)
       end

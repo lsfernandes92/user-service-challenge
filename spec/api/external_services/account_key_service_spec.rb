@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ::Api::ExternalServices::AccountKeyService do
@@ -14,11 +16,10 @@ RSpec.describe ::Api::ExternalServices::AccountKeyService do
       it 'returns json object with error' do
         expect(response).to be_a Hash
         expect(response).to match({
-          message: "422 Unprocessable Entity",
-          error: 422
-        })
+                                    message: '422 Unprocessable Entity',
+                                    error: 422
+                                  })
       end
-      
     end
 
     context 'when email is blank' do
@@ -27,16 +28,16 @@ RSpec.describe ::Api::ExternalServices::AccountKeyService do
       it 'returns 422 Unprocessable Entity' do
         expect(response).to be_a(Hash)
         expect(response).to match({
-          message: "422 Unprocessable Entity",
-          error: 422
-        })
+                                    message: '422 Unprocessable Entity',
+                                    error: 422
+                                  })
       end
 
       it 'logs error message' do
         allow(Rails.logger).to receive(:error)
 
         described_class.gather_account_key(email: email, key: key)
-        
+
         expect(Rails.logger).to have_received(:error).with('!!! Something went wrong with the POST request')
         expect(Rails.logger).to have_received(:error).with('!!! It fails with error: 422')
         expect(Rails.logger).to have_received(:error).with('!!! And with message: 422 Unprocessable Entity')
@@ -49,16 +50,16 @@ RSpec.describe ::Api::ExternalServices::AccountKeyService do
       it 'returns 422 Unprocessable Entity' do
         expect(response).to be_a(Hash)
         expect(response).to match({
-          message: "422 Unprocessable Entity",
-          error: 422
-        })
+                                    message: '422 Unprocessable Entity',
+                                    error: 422
+                                  })
       end
 
       it 'logs error message' do
         allow(Rails.logger).to receive(:error)
 
         described_class.gather_account_key(email: email, key: key)
-        
+
         expect(Rails.logger).to have_received(:error).with('!!! Something went wrong with the POST request')
         expect(Rails.logger).to have_received(:error).with('!!! It fails with error: 422')
         expect(Rails.logger).to have_received(:error).with('!!! And with message: 422 Unprocessable Entity')
@@ -76,7 +77,7 @@ RSpec.describe ::Api::ExternalServices::AccountKeyService do
     it 'returns true when account key service succeed' do
       expect(request_succeed?).to eq true
     end
-    
+
     it 'returns false when account key service fails' do
       expect(request_succeed?).to eq false
     end
