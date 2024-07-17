@@ -20,6 +20,34 @@ Feel free to poke around the code and see how I've structured it by yourself. Al
 
 I've reviewed the TODOs, and you can see what's been completed by checking the. [README.md](./README.md)
 
+## Observations
+
+### :warning: Required headers for requests
+
+In my previous clarifications questions that I sent to you guys, I mentioned about enforcing headers. Since it's a good practice I've now implemented this for API requests.
+
+#### Here's what's changed:
+
+* GET requests to `GET /api/users`: These requests must include the `Accept` header with the only accepted value of `application/json`. This ensures the client can only accept data formatted as JSON.
+* POST requests to `POST /api/users`: These requests must include the `Content-Type` header with the only accepted value of `application/json`. This ensures the client sends data formatted as JSON.
+
+### Seed the databse
+As mentioned earlier, to simplify the initial setup, you can populate your development database with some sample users. This will give you data to view when you make a `GET /api/users` request.
+
+Here's how to seed the database if your container is up and running:
+
+`$ docker compose run web rails dev:setup`
+
+### Challenge with account key retrieval
+
+While implementing the background job feature to retrieve account keys externally, I encountered a challenge.  I couldn't find a way to immediately return the `account_key` field populated in the response when a user creates a new user via `POST /api/users`.
+
+To address this, I decided to allow the `account_key` field to initially return `nil` in the response. And then right before the user receives the response, a background job is triggered. This job calls the `AccountKeyService` to retrieve the account key and update the user record. The entire process typically takes only a few seconds.
+
+While the initial `POST /api/users` request won't include the `account_key` due to the background processing, you can subsequently retrieve it using a `GET /api/users?email=<DESIRABLE_EMAIL>` request. This will return the user information, including the generated `account_key`.
+
+I discovered this behavior the day before returning the project. Given the tight deadline, I decided to document the current behavior for your review, rather than send a last-minute question.
+
 ## How to run the test suite
 
 Follow the instructions on how to getting started in the [README.md](./README.md) file to set up your development environment. Once you've completed the setup steps, open your terminal and run the following command:
@@ -197,25 +225,6 @@ Pending: (Failures listed here are expected and do not affect your suite's statu
 Finished in 7.2 seconds (files took 1.69 seconds to load)
 79 examples, 0 failures, 3 pending
 ```
-
-## Observations
-
-### Seed the databse
-As mentioned earlier, to simplify the initial setup, you can populate your development database with some sample users. This will give you data to view when you make a `GET /api/users` request.
-
-Here's how to seed the database if your container is up and running:
-
-`$ docker compose run web rails dev:setup`
-
-### Challenge with account key retrieval
-
-While implementing the background job feature to retrieve account keys externally, I encountered a challenge.  I couldn't find a way to immediately return the `account_key` field populated in the response when a user creates a new user via `POST /api/users`.
-
-To address this, I decided to allow the `account_key` field to initially return `nil` in the response. And then right before the user receives the response, a background job is triggered. This job calls the `AccountKeyService` to retrieve the account key and update the user record. The entire process typically takes only a few seconds.
-
-While the initial `POST /api/users` request won't include the `account_key` due to the background processing, you can subsequently retrieve it using a `GET /api/users?email=<DESIRABLE_EMAIL>` request. This will return the user information, including the generated `account_key`.
-
-I discovered this behavior the day before returning the project. Given the tight deadline, I decided to document the current behavior for your review, rather than send a last-minute question.
 
 ## Future improvements
 
