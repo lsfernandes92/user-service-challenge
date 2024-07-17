@@ -5,7 +5,7 @@ http_interactions:
     uri: https://w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws/v1/account
     body:
       encoding: UTF-8
-      string: '{"email":"shakita@parisian.example","key":"nzlfz7eNeXT6dtFwlOwTWUeZUgecvCUOprTbhglEZquJ1vaDK6nwDQVBQ3BfH5RuPdxyR5dagYCvdoEE3Mp0RxoSy2HxqG2KRu0U"}'
+      string: '{"email":"emilio_simonis@gusikowski-cole.test","key":"obkTONj86iJ9qMxmRIMpczLO4Tfnf4bOsLNg1ZY7s01EYBalkwviLiklm6uz9qU70HiHvebb7Bz73cUjNiYRTHdGuqc0Zxj2QWAT"}'
     headers:
       Accept:
       - "*/*"
@@ -14,30 +14,30 @@ http_interactions:
       Content-Type:
       - application/json
       Content-Length:
-      - '145'
+      - '156'
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Host:
       - w7nbdj3b3nsy3uycjqd7bmuplq0yejgw.lambda-url.us-east-2.on.aws
   response:
     status:
-      code: 422
-      message: Unprocessable Entity
+      code: 200
+      message: OK
     headers:
       Date:
-      - Mon, 15 Jul 2024 21:12:24 GMT
+      - Tue, 16 Jul 2024 22:19:49 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '0'
+      - '128'
       Connection:
       - keep-alive
       X-Amzn-Requestid:
-      - 6f44859f-c904-4e72-ad85-85e03e785dcb
+      - 6a2dea32-4d27-4272-91f5-5e3882b9949d
       X-Amzn-Trace-Id:
-      - root=1-669590b8-4c2e3695044a5ec2280cd42e;parent=5c1ae1b16c419c02;sampled=0;lineage=2f82d3d6:0
+      - root=1-6696f204-1d8e3768584189ef072b9da2;parent=6a4b6c1371e830a3;sampled=0;lineage=2f82d3d6:0
     body:
       encoding: UTF-8
-      string: ''
-  recorded_at: Mon, 15 Jul 2024 21:12:24 GMT
+      string: '{"email":"emilio_simonis@gusikowski-cole.test","account_key":"4be3eeac0eea6e1780153c9e36efcbe10c80bfed602f3290b36e3595b2deda34"}'
+  recorded_at: Tue, 16 Jul 2024 22:19:49 GMT
 recorded_with: VCR 6.2.0

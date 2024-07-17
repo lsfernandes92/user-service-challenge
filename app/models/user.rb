@@ -18,10 +18,11 @@ class User < ApplicationRecord
     uniqueness: true  
   validates :account_key,
     length: { maximum: 100 },
-    uniqueness: true
+    uniqueness: true, unless: -> { account_key.nil? }
 
-  before_validation :generate_key, :generate_account_key, on: :create
+  before_validation :generate_key, on: :create
   after_validation :generate_hash_salt_password, on: :create
+  after_commit :generate_account_key, on: :create
 
   scope :most_recently, -> (ids) { User.where(id: ids).order(created_at: :desc) }
   scope :by_email, -> (email) { where(email: email) }
@@ -54,22 +55,6 @@ class User < ApplicationRecord
     end
 
     def generate_account_key
-      gather_account_key
-      self.account_key = @external_account_key if account_key_service_succeed?
-    end
-
-    def gather_account_key
-      @external_account_key ||= account_key_service.gather_account_key(
-        email: self.email,
-        key: self.key
-      )
-    end
-
-    def account_key_service
-      @account_key_service ||= ::Api::ExternalServices::AccountKeyService
-    end
-
-    def account_key_service_succeed?
-      @account_key_service.request_succeed?
+      GatherAccountKeyJob.perform_in(Time.now, self.email, self.key)
     end
 end

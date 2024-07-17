@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sidekiq/testing' 
 
 RSpec.describe User, type: :model do
   subject { build(:user) }
@@ -6,12 +7,9 @@ RSpec.describe User, type: :model do
   let(:first_user) { User.first }
   let(:last_user) { User.last }
 
-  context 'when is being created', :vcr do
+  context 'when is being created' do
     let(:user_without_key) { build(:user, :without_key) }
     let(:user_without_account_key) { build(:user, :without_account_key) }
-    let(:account_key_service_url) do
-      "#{::Api::ExternalServices::AccountKeyService::BASE_URL}/v1/account"
-    end
 
     it 'succeds with valid attributes' do
       expect(subject).to be_valid
@@ -26,11 +24,10 @@ RSpec.describe User, type: :model do
       expect(last_user.key.length).to eq 100
     end
     
-    it 'generates the account_key automagically', :vcr do
+    it 'sets account_key to nil' do
       user_without_account_key.save!
 
-      expect(last_user.account_key).not_to be_blank
-      expect(last_user.account_key).to be_a String
+      expect(last_user.account_key).to be_nil
     end
     
     it 'generates a salt password automagically' do
@@ -42,22 +39,12 @@ RSpec.describe User, type: :model do
       expect(pass_verified).to eq true
     end
 
-    it 'calls account key external service', :vcr do
-      user_without_account_key.save!
-
-      stub = stub_request(:post, account_key_service_url)
-      
-      expect(stub).to have_been_requested
-    end
-
-    it 'skips generating the account_key if external service fail', :vcr do
-      user_without_account_key.save!
-
-      expect(last_user.account_key).to be_nil
+    it 'queues job to gather account key' do
+      expect { user_without_account_key.save! }.to change(GatherAccountKeyJob.jobs, :size).by(1)
     end
   end
 
-  context 'with validations', :vcr do
+  context 'with validations' do
     context 'on email attribute' do
       it 'validates presence' do
         subject.email = ''
@@ -218,11 +205,19 @@ RSpec.describe User, type: :model do
             ["Account key has already been taken"]
           )
         end
+
+        it 'does not validate uniqueness on nil' do
+          create(:user)
+          first_user.account_key = nil
+  
+          expect(first_user).to be_valid
+        end
+        
       end
     end
   end
 
-  describe 'when using scope', :vcr do
+  describe 'when using scope' do
     before { create_list(:user, 2) }
 
     let(:users_ids) { User.ids }
@@ -289,7 +284,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#as_json', :vcr do
+  describe '#as_json' do
     before { create(:user) }
 
     let(:user_hash) { User.first.as_json }

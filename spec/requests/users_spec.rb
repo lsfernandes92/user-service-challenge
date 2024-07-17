@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sidekiq/testing'
 
 RSpec.describe "Users", type: :request do
   describe 'GET /api/users' do
@@ -133,39 +134,32 @@ RSpec.describe "Users", type: :request do
       }
     end
 
-    context 'with valid params', :vcr do
-      before { post api_users_path, params: { user: valid_user_params } }
-
-      let(:account_key_service_url) do
-        "#{::Api::ExternalServices::AccountKeyService::BASE_URL}/v1/account"
-      end
-  
+    context 'with valid params' do
       it 'returns status code 201' do
+        post api_users_path, params: { user: valid_user_params }
+
         expect(response).to have_http_status(201)
       end
 
       it 'responds with a single user object' do
+        post api_users_path, params: { user: valid_user_params }
+
         expect(response_body).to be_a Hash
         expect(response_body['email']).to eq valid_user_params[:email]
         expect(response_body['phone_number']).to eq valid_user_params[:phone_number]
         expect(response_body['full_name']).to eq valid_user_params[:full_name]
         expect(response_body['key']).to be_a String
-        expect(response_body['account_key']).to be_a String
+        expect(response_body['account_key']).to be_nil
         expect(response_body['metadata']).to eq valid_user_params[:metadata]
       end
 
-      it 'calls account key external service' do
-        stub = stub_request(:post, account_key_service_url)
-        expect(stub).to have_been_requested
-      end
-
-      it 'skips generating the account_key if external service fail', :vcr do
-        expect(response).to have_http_status(201)
-        expect(response_body['account_key']).to be_nil
+      it 'queues job to gather account key' do
+        expect { post api_users_path, params: { user: valid_user_params } 
+        }.to change(GatherAccountKeyJob.jobs, :size).by(1)
       end
     end
 
-    context 'with invalid params', :vcr do
+    context 'with invalid params' do
       before { post api_users_path, params: { user: invalid_user_params } }
 
       let(:invalid_user_params) do

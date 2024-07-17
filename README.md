@@ -50,7 +50,7 @@ below:
     and `metadata` fields.
 - [x] `key` field should be generated server side when user is created.
 - [x] `password` should be stored hashed with a salt value.
-- [ ] `account_key` field should be generated from [Account Key Service](#account-key-service).
+- [x] `account_key` field should be generated from [Account Key Service](#account-key-service).
 
 ### JSON Specifications
 
@@ -113,8 +113,8 @@ record when that background process is complete. If an error occurs, the
 application should retry on some reasonable schedule.
 
 - [x] Create Access Key service library,
-- [ ] On user create, trigger Sidekiq job for access Account Key service.
-- [ ] Perform retry on failure from Account Key service.
+- [x] On user create, trigger Sidekiq job for access Account Key service.
+- [x] Perform retry on failure from Account Key service.
 - [x] Update user model with `account_key` value.
 
 ### Testing
@@ -139,11 +139,11 @@ application should retry on some reasonable schedule.
 - [x] Verify that creating a new user with non-unique values specified, returns
     a 422 Unprocessable Entity status, and an array of errors in the specified
     JSON format.
-- [] Verify that a new user that is created has a random key generated for it on
+- [x] Verify that a new user that is created has a random key generated for it on
     the server side.
-- [ ] Verify that a new user that is created has it's password stored in a hashed
+- [x] Verify that a new user that is created has it's password stored in a hashed
     manner, with a salt value.
-- [ ] Verify that a new user that is created has an access_key created for it by
+- [x] Verify that a new user that is created has an access_key created for it by
     accessing the Account Key service.
 
 
