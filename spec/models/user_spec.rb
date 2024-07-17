@@ -229,7 +229,7 @@ RSpec.describe User, type: :model do
         expect(User.most_recently(users_ids).first).to eq last_user_created
       end
 
-      it 'return nil when no id passed' do
+      it 'returns nil when no id passed' do
         expect(User.most_recently([]).first).to eq nil
       end
     end
@@ -278,7 +278,7 @@ RSpec.describe User, type: :model do
         expect(User.by_metadata(user_metadata).first).to eq first_user
       end
 
-      it 'return nil with invalid metadata' do
+      it 'returns nil with invalid metadata' do
         expect(User.by_metadata('foo metadata').first).to eq nil
       end
     end
